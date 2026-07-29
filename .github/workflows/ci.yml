@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check shell syntax
+        run: |
+          bash -n pull_repos.sh
+          bash -n scripts/sync-codex-to-cursor.sh
+          bash -n tests/pull_repos_test.sh
+
+      - name: Run repository pull regression test
+        run: bash tests/pull_repos_test.sh
+
+      - name: Check local Markdown links
+        run: python3 scripts/check_markdown_links.py

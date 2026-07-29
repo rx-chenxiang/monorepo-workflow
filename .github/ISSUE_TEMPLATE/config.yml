@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全问题
+    url: https://github.com/rx-chenxiang/monorepo-workflow/security
+    about: 请勿在公开 Issue 中披露漏洞细节；请先阅读 SECURITY.md。

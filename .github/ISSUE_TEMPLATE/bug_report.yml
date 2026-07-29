@@ -1,0 +1,43 @@
+name: 问题报告
+description: 报告模板、规则、文档或脚本中的可复现问题。
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请不要在公开 Issue 中提交密钥、个人信息、业务数据或安全漏洞利用细节。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 清楚说明实际发生了什么，以及预期行为。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 提供最小可复现命令、配置片段或操作步骤。
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 使用的提交或版本
+      placeholder: main / commit SHA
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 例如 macOS / Linux、Shell、Codex 或 Cursor 版本。
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志或截图
+      description: 请先删除敏感信息。

@@ -40,6 +40,10 @@
     ├── writing-tech-design-doc/      # 前端 §1～§5 技术设计
     ├── ai-browser-agent/             # Playwright 浏览器验收
     ├── e2e-testing/                  # E2E 测试模式
+    ├── front-e2e-testing/            # 前端代码化自动化测试
+    ├── qa-test-execution/            # 功能 / 验收 / 回归测试执行
+    ├── test-yl/                      # 测试用例资产生成
+    ├── ui-ux-pro-max/                # UI / UX 设计知识库
     └── huashu-design/                # HTML 高保真原型（demos 大文件见 .gitignore）
 ```
 

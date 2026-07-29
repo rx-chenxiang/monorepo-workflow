@@ -101,6 +101,11 @@ The root `.gitignore` intentionally keeps each project's `AGENTS.md` and `docs/`
 | Repository pull configuration | `repos.conf` |
 | Repository pull script | `pull_repos.sh` |
 | Integration agreement template | `docs/general/workspace/联调约定.md` |
+| Public documentation index | `docs/README.md` |
+| Open-source release checklist | `docs/guides/open-source-release-checklist.md` |
+| Contribution and security policies | `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` |
+| License and third-party notices | `LICENSE`, `THIRD_PARTY_NOTICES.md` |
+| Baseline CI | `.github/workflows/ci.yml` |
 
 ## Maintenance Notes
 
@@ -108,5 +113,6 @@ The root `.gitignore` intentionally keeps each project's `AGENTS.md` and `docs/`
 2. Run `scripts/sync-codex-to-cursor.sh` after changing `.codex/README.md`, `.codex/rules/`, or `.codex/agents/`.
 3. Keep `README.md` and `README.zh-CN.md` aligned when changing public-facing project behavior.
 4. Keep module templates under all four project docs directories aligned in structure and intent.
+5. When adding third-party Skills, scripts, or assets, preserve their license and update `THIRD_PARTY_NOTICES.md`.
 
 <!-- AIGC:cursor|author:沉香|lines:约130|dates:2026-07|功能说明:重写开源版AGENTS指南，面向AI Agent与贡献者说明四端工作区、路由规则、文档结构和维护策略 -->
