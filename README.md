@@ -1,120 +1,185 @@
-# 通用项目工作区说明
+# Monorepo Workflow
 
-## 当前文件说明
+[简体中文](./README.zh-CN.md) | English
 
-本仓库为 **通用项目工作区** monorepo：统一纳入后端 API、管理平台前端、门户端前端、官网前端四个子项目，便于多端协作、接口联调、需求文档沉淀与 AI Agent 调度。
+Monorepo Workflow is an open-source workspace template for coordinating full-stack, multi-client product development with AI coding agents. It is designed for teams that need one backend API, multiple frontend clients, structured product docs, coding plans, and repeatable agent workflows in one repository.
 
-> **打开方式**：请在 Cursor / VS Code / Codex 中以 **本仓库根目录**（含 `api`、`fornt_admin`、`m_front`、`pc_fornt`、`.codex`、`docs` 的目录）作为工作区根打开，勿单独只打开某个子文件夹。
+## What This Project Provides
 
-## 拉取代码脚本
+- A generic four-part workspace: backend API, admin dashboard, mobile / H5 portal, and PC website.
+- Agent-friendly routing rules for deciding which project should be changed.
+- Documentation templates for requirements, technical design, coding plans, module docs, and integration agreements.
+- Codex and Cursor-compatible rules and agent definitions.
+- A repository pull script for cloning or updating multiple project repositories from one config file.
+- Guardrails for API-first frontend integration and avoiding mock-only development.
 
-根目录提供 [`pull_repos.sh`](./pull_repos.sh) + [`repos.conf`](./repos.conf) 用于按配置 clone / pull 多个代码仓库。
+## Workspace Layout
 
-常用命令：
+```text
+.
+├── AGENTS.md                         # Agent and contributor guide
+├── README.md                         # English README
+├── README.zh-CN.md                   # Chinese README
+├── api/                              # Backend API docs and agent entry
+├── fornt_admin/                      # Admin dashboard docs and agent entry
+├── m_front/                          # Mobile / H5 portal docs and agent entry
+├── pc_fornt/                         # PC website docs and agent entry
+├── docs/                             # Workspace-level requirements and designs
+├── .codex/                           # Source of truth for Codex rules, agents, skills
+├── .cursor/                          # Cursor mirror for rules and agents
+├── scripts/sync-codex-to-cursor.sh   # Sync .codex rules and agents to .cursor
+├── pull_repos.sh                     # Clone / pull repositories from repos.conf
+└── repos.conf                        # Repository source configuration template
+```
+
+## Project Roles
+
+| Project | Directory | Role |
+|---------|-----------|------|
+| Backend API | `api/` | API service, authentication, domain services, data access |
+| Admin dashboard | `fornt_admin/` | Internal operations and management UI |
+| Mobile portal | `m_front/` | User-facing mobile, H5, or portal client |
+| PC website | `pc_fornt/` | Public website, marketing site, or brand site |
+
+> Note: `fornt_admin` and `pc_fornt` are intentionally preserved as directory names for compatibility with the current template. Aliases such as `front_admin` and `pc_front` are documented for agent routing.
+
+## Quick Start
+
+Clone this repository:
 
 ```bash
-# 拉取默认配置中的全部 https 仓库到指定目录
-./pull_repos.sh --target-dir /Users/your-name/Documents/code
+git clone https://github.com/rx-chenxiang/monorepo-workflow.git
+cd monorepo-workflow
+```
 
-# 只拉取通用工作区
-./pull_repos.sh --target-dir /Users/your-name/Documents/code --workspace general
+Check the pull script:
 
-# 只拉取某个项目仓库
-./pull_repos.sh --target-dir /Users/your-name/Documents/code --project api
+```bash
+bash tests/pull_repos_test.sh
+```
 
-# 使用 SSH 配置源
-./pull_repos.sh --target-dir /Users/your-name/Documents/code --transport ssh
+Configure actual repositories in `repos.conf`, then list selected repositories:
 
-# 先查看筛选结果，不执行 git clone / pull
+```bash
 ./pull_repos.sh --workspace general --list
 ```
 
-`repos.conf` 按 `[工作区]` 分组；仓库行格式为 `[传输方式]git_url|branch|target_dir|project_id`。当前通用模板不预置业务仓库地址，接入真实项目时按实际 Git 地址补充。
+Clone or update configured repositories:
 
----
+```bash
+./pull_repos.sh --target-dir /path/to/workspace --workspace general
+```
 
-## 工作区概览
+## Repository Configuration
 
-当前通用工作区仅保留四个子项目：
+`repos.conf` uses this format:
 
-| 项目组 | 目录 | 角色 | 说明 |
-|--------|------|------|------|
-| **general**（通用全栈） | [api](./api/) | 后端 API | 统一承载服务端接口、鉴权、领域服务、任务队列等 |
-| | [fornt_admin](./fornt_admin/) | 管理平台前端 | 面向运营 / 管理人员的后台管理平台 |
-| | [m_front](./m_front/) | 门户端前端 | 面向用户的移动端、H5 或门户端 |
-| | [pc_fornt](./pc_fornt/) | 官网前端 | 面向公开访问的 PC 官网或营销站点 |
-| 通用 | [.codex](./.codex/) | AI 协作配置 | Agent、Skills、工作流规则（非业务代码） |
-| 通用 | [docs](./docs/) | 工作区级文档 | 全栈需求、技术设计、编码计划，按 `docs/general/` 分层 |
+```text
+[workspace_name]
+[transport]git_url|branch(optional)|target_dir(optional)|project_id(optional)
+```
 
-### 口语调度（简表）
+Example:
 
-| 你说 | 范围 |
-|------|------|
-| **通用 / 全栈 / 全部 / 四端** | `api` + `fornt_admin` + `m_front` + `pc_fornt` |
-| **后端 / API / 服务端 / 接口** | `api` |
-| **管理平台 / 管理后台 / admin** | `fornt_admin` |
-| **门户端 / 移动端 / H5** | `m_front` |
-| **官网 / PC官网 / PC前端** | `pc_fornt` |
+```text
+[general]
+[https]https://github.com/your-org/api.git|main|api|api
+[https]https://github.com/your-org/fornt_admin.git|main|fornt_admin|fornt_admin
+[https]https://github.com/your-org/m_front.git|main|m_front|m_front
+[https]https://github.com/your-org/pc_fornt.git|main|pc_fornt|pc_fornt
+```
 
-> `前端` 泛指三个前端子项目，未说明端别时需要先确认目标目录。完整别名见 [AGENTS.md](./AGENTS.md#口语速查)；AI 统一调度见 [`.codex/rules/project-routing.mdc`](./.codex/rules/project-routing.mdc)。
+## Documentation Workflow
 
----
+Workspace-level feature documents live under:
 
-## 各子项目说明
+```text
+docs/general/{feature-name}/
+├── 需求文档/
+├── 技术设计方案/
+└── coding-plan/
+```
 
-### api — 通用后端 API
+Each project keeps long-lived implementation knowledge under its own `docs/` directory:
 
-| 项 | 说明 |
-|----|------|
-| 定位 | 服务端接口、鉴权、领域服务、数据访问、异步任务等 |
-| 代码目录 | [`api/`](./api/) |
-| 文档入口 | [`api/docs/README.md`](./api/docs/README.md) |
-| 模块索引 | [`api/docs/modules/README.md`](./api/docs/modules/README.md) |
+```text
+{project}/docs/
+├── README.md
+├── modules/
+├── codebase/
+└── rules/
+```
 
-### fornt_admin — 管理平台前端
+Module templates are available at:
 
-| 项 | 说明 |
-|----|------|
-| 定位 | 面向内部运营、管理人员的 Web 管理平台 |
-| 代码目录 | [`fornt_admin/`](./fornt_admin/) |
-| 文档入口 | [`fornt_admin/docs/README.md`](./fornt_admin/docs/README.md) |
-| 模块索引 | [`fornt_admin/docs/modules/README.md`](./fornt_admin/docs/modules/README.md) |
+- `api/docs/modules/_template.md`
+- `fornt_admin/docs/modules/_template.md`
+- `m_front/docs/modules/_template.md`
+- `pc_fornt/docs/modules/_template.md`
 
-### m_front — 门户端前端
+## Agent Workflow
 
-| 项 | 说明 |
-|----|------|
-| 定位 | 面向用户的移动端、H5、门户端体验 |
-| 代码目录 | [`m_front/`](./m_front/) |
-| 文档入口 | [`m_front/docs/README.md`](./m_front/docs/README.md) |
-| 模块索引 | [`m_front/docs/modules/README.md`](./m_front/docs/modules/README.md) |
+`.codex/` is the source of truth for AI agent configuration:
 
-### pc_fornt — 官网前端
+- `.codex/rules/project-routing.mdc`
+- `.codex/rules/multi-project-workspace.mdc`
+- `.codex/rules/project-workflow-api.mdc`
+- `.codex/rules/project-workflow-front.mdc`
+- `.codex/agents/`
+- `.codex/skills/`
 
-| 项 | 说明 |
-|----|------|
-| 定位 | 面向公开访问的 PC 官网、品牌站或营销站点 |
-| 代码目录 | [`pc_fornt/`](./pc_fornt/) |
-| 文档入口 | [`pc_fornt/docs/README.md`](./pc_fornt/docs/README.md) |
-| 模块索引 | [`pc_fornt/docs/modules/README.md`](./pc_fornt/docs/modules/README.md) |
+`.cursor/` mirrors only `README.md`, `rules/`, and `agents/`. After changing `.codex`, run:
 
----
+```bash
+./scripts/sync-codex-to-cursor.sh
+```
 
-## 文档索引速查
+## Integration Guardrails
 
-| 用途 | 路径 |
-|------|------|
-| 工作区总说明 | 本文件 `README.md` |
-| 工作区 AI 入口 | [AGENTS.md](./AGENTS.md) |
-| 工作区需求文档 | [docs/README.md](./docs/README.md) |
-| 四端联调约定 | [docs/general/workspace/联调约定.md](./docs/general/workspace/联调约定.md) |
-| 后端模块索引 | [api/docs/modules/README.md](./api/docs/modules/README.md) |
-| 管理平台模块索引 | [fornt_admin/docs/modules/README.md](./fornt_admin/docs/modules/README.md) |
-| 门户端模块索引 | [m_front/docs/modules/README.md](./m_front/docs/modules/README.md) |
-| 官网模块索引 | [pc_fornt/docs/modules/README.md](./pc_fornt/docs/modules/README.md) |
-| 多端协作规则 | [.codex/rules/multi-project-workspace.mdc](./.codex/rules/multi-project-workspace.mdc) |
-| 禁止前端 Mock | [.codex/rules/api-first-no-mock.mdc](./.codex/rules/api-first-no-mock.mdc) |
-| Codex / Cursor 同步脚本 | [scripts/sync-codex-to-cursor.sh](./scripts/sync-codex-to-cursor.sh) |
+- Frontend clients should integrate with the real `api/` contract.
+- Mock-only frontend behavior should not replace backend integration.
+- Multi-client features should document each client's responsibility.
+- Integration assumptions should be recorded in `docs/general/workspace/联调约定.md` or in the feature technical design.
 
-<!-- AIGC:cursor|author:沉香|lines:约3|dates:2026-07|功能说明:工作区文档索引补充四端联调约定与Codex到Cursor同步脚本入口 -->
-<!-- AIGC:cursor|author:沉香|lines:约120|dates:2026-07|功能说明:工作区说明初始化为通用四端版本，仅保留api、fornt_admin、m_front、pc_fornt四个子项目入口 -->
+## What Is Tracked In The Root Repository
+
+The root repository is meant to track:
+
+- Workflow rules and agent definitions.
+- Documentation templates.
+- Project-level `AGENTS.md` and `docs/`.
+- Repository management scripts.
+- Workspace-level requirement and design docs.
+
+Actual application source code under `api/`, `fornt_admin/`, `m_front/`, and `pc_fornt` can be managed by separate repositories. The root `.gitignore` keeps project docs trackable while ignoring unregistered application source by default.
+
+## Verification
+
+Run:
+
+```bash
+bash tests/pull_repos_test.sh
+```
+
+Expected output:
+
+```text
+pull_repos_test.sh passed
+```
+
+## Roadmap
+
+- Add optional bootstrap scripts for creating real backend and frontend projects.
+- Add CI checks for documentation links and rule synchronization.
+- Add example `repos.conf` variants for HTTPS and SSH.
+- Add contribution and license files for public collaboration.
+
+## Contributing
+
+Issues and pull requests are welcome. Please keep changes scoped, update both English and Chinese README files when public behavior changes, and keep `.codex` and `.cursor` synchronized through the sync script.
+
+## License
+
+No license file has been added yet. Add a `LICENSE` file before advertising this repository as reusable open-source software.
+
+<!-- AIGC:cursor|author:沉香|lines:约165|dates:2026-07|功能说明:初始化开源英文README，介绍项目定位、目录结构、快速开始、文档流、Agent配置与开源注意事项 -->
