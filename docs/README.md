@@ -1,6 +1,6 @@
 # 文档中心
 
-本目录承载工作区的公开使用指南、跨端需求交付资料和需求模板。各子项目的实现细节与长期模块知识应放在其自己的 `docs/` 目录中：`api/docs/`、`fornt_admin/docs/`、`m_front/docs/`、`pc_fornt/docs/`。
+本目录承载工作区的公开使用指南、跨项目需求交付资料和需求模板。默认四端的实现细节与长期模块知识放在各自的 `docs/` 目录中：`api/docs/`、`fornt_admin/docs/`、`m_front/docs/`、`pc_fornt/docs/`；新增项目沿用相同结构。
 
 ## 目录职责
 

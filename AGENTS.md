@@ -16,7 +16,7 @@ This file is the shared operating guide for AI coding agents and human contribut
 
 ## Workspace Model
 
-This repository is a generic full-stack, multi-client workspace template. It coordinates one backend and three frontend clients:
+This repository is a generic full-stack, multi-client workspace template. The starter registry coordinates one backend and three frontend clients:
 
 | Project ID | Directory | Role |
 |------------|-----------|------|
@@ -26,6 +26,8 @@ This repository is a generic full-stack, multi-client workspace template. It coo
 | `pc_fornt` | `pc_fornt/` | PC website frontend |
 
 The directory names `fornt_admin` and `pc_fornt` are intentionally preserved for compatibility with the current template. Agents should also recognize the aliases `front_admin` and `pc_front` when interpreting user intent.
+
+This four-project registry is the default topology, not the workspace limit. Maintainers may add project groups, services, clients, internal tools, or other repositories by extending the root registry, routing rules, `repos.conf`, and the new project's `AGENTS.md` and documentation indexes together.
 
 ## Routing Rules
 

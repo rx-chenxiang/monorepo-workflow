@@ -1,141 +1,173 @@
 <div align="center">
   <h1>Monorepo Workflow</h1>
-  <p><strong>面向 AI 辅助全栈、多端交付的协作操作系统。</strong></p>
-  <p>在一个工作区中协调需求、API 契约、四个项目仓库、Agent 工作流、联调验收与长期文档。</p>
-  <p>
-    <a href="./README.md">English</a> ·
-    <a href="./docs/guides/quick-start.md">快速开始</a> ·
-    <a href="./docs/guides/workspace-architecture.md">工作区架构</a> ·
-    <a href="./CONTRIBUTING.md">贡献指南</a>
-  </p>
+  <p><strong>一个人，打通公司的全部项目。</strong></p>
+  <p>让产品、设计、后端、前端、测试、评审和文档在同一套 AI 协作系统中持续交付，告别项目隔阂。</p>
+  <p><code>1 位操作者 × 共享上下文 × 专业 Agents = 公司级交付能力</code></p>
   <p>
     <a href="https://github.com/rx-chenxiang/monorepo-workflow/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/rx-chenxiang/monorepo-workflow/actions/workflows/ci.yml/badge.svg"></a>
     <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-2ea44f.svg"></a>
   </p>
+  <p>
+    <a href="./README.md">English</a> ·
+    <a href="#30-秒开始">快速开始</a> ·
+    <a href="./docs/guides/workspace-architecture.md">工作区架构</a> ·
+    <a href="./CONTRIBUTING.md">参与贡献</a>
+  </p>
+  <p><strong>快速开始：</strong><code>git clone https://github.com/rx-chenxiang/monorepo-workflow.git</code></p>
 </div>
 
-> 先把需求、边界与接口说清楚，再让人和 Agent 在正确的项目中实现并验证。
+![一人驱动公司全部项目的协作蓝图](./assets/readme/one-person-company-blueprint.png)
 
-```text
-需求 → 技术设计 → 编码计划 → API → 多端实现 → 联调 / 验收 → 文档沉淀
-```
-
-Monorepo Workflow 是一套**工作区模板和协作规范**，不是自动生成的业务系统。它适合后端和多个前端分别使用独立 Git 仓库、但仍需要统一协作上下文的团队。
-
-## 为什么需要它
-
-多端产品常见的问题不是缺少代码，而是缺少一致的协作上下文：需求分散、接口口径漂移、Agent 修改了错误的项目、前端长期依赖 Mock，或者实现知识在发布后丢失。
-
-本仓库将这些问题转化为明确的目录与约束：
-
-| 内置能力 | 带来的价值 |
-|---|---|
-| 四端工作区 | 用同一套协作模型协调后端、管理平台、移动 / H5 门户和 PC 官网 |
-| 文档驱动交付 | 将一次需求的交付记录与项目长期知识分开维护 |
-| Agent 路由 | 根据自然语言请求识别工作角色、流程与目标项目 |
-| API 优先联调 | 前端使用真实后端契约，不以 Mock 代替联调 |
-| 多仓库管理 | 通过 `repos.conf` 预览、拉取或更新真实业务仓库 |
-| 跨工具配置 | 以 `.codex/` 为权威来源，生成受支持的 Cursor 镜像 |
-
-## 选择接入方式
-
-| 方式 | 适合场景 | 起点 |
-|---|---|---|
-| 直接作为模板 | 新建多端项目工作区 | 克隆本仓库，替换 `repos.conf` 中的示例 |
-| 接入已有仓库 | 产品已经拆分为多个 Git 仓库 | 保留本仓库作为协调根仓，配置真实业务仓库地址 |
-| 只采用协作资产 | 团队已有自己的 Monorepo 层级 | 按需复制并调整 `AGENTS.md`、`.codex/` 与文档模板 |
-
-不要在同一工具中重复安装多份相同规则或 Skills。应确定唯一权威来源，并说明哪些目录由同步脚本生成。
-
-## 快速开始
+## 30 秒开始
 
 ```bash
 git clone https://github.com/rx-chenxiang/monorepo-workflow.git
 cd monorepo-workflow
 
-# 执行基础检查
+# 验证工作区
 bash tests/pull_repos_test.sh
 python3 scripts/check_markdown_links.py
+```
 
-# 编辑 repos.conf 后，先预览将要操作的仓库
+然后在 [`repos.conf`](./repos.conf) 中配置真实仓库，先预览范围，再执行拉取或更新：
+
+```bash
 ./pull_repos.sh --workspace general --list
 ```
 
-确认列表无误后，再拉取或更新配置的业务仓库：
+完整接入流程见[快速开始指南](./docs/guides/quick-start.md)。
 
-```bash
-./pull_repos.sh --target-dir /path/to/workspace --workspace general
+## 它解决什么问题
+
+大多数 AI 编码方案都停留在单个仓库中。每切换一个项目，就要重新解释背景、重复架构决策、重新连接需求，并在人、Agent、后端、前端、测试和文档之间手工传递信息。
+
+Monorepo Workflow 在所有业务仓库之上增加统一协作层：
+
+```text
+想法 → 需求 → 设计 → 计划 → 开发 → 测试 → 评审 → 文档 → 持续改进
 ```
 
-完整步骤见[快速开始指南](./docs/guides/quick-start.md)，配置格式见[仓库配置指南](./docs/guides/repository-configuration.md)。
+一个人掌握目标，专业 Agent 承担不同角色，路由规则把任务送到正确项目，长期文档把知识留给下一次开发。
 
-## 工作区层级
+## 它和同类方案有什么不同
+
+| 常见的逐仓库 AI 开发 | Monorepo Workflow |
+|---|---|
+| 切换仓库就丢失上下文 | 共享需求、接口契约、决策和项目知识 |
+| 每次靠提示词临时判断改哪里 | 修改前先执行“工作角色 × 项目范围”路由 |
+| Monorepo 意味着所有源码必须共用 Git 历史 | 用协调根仓统一治理多个独立业务仓库 |
+| 前端容易长期依赖本地 Mock | API 优先，所有客户端对齐真实后端契约 |
+| 交接后设计依据和实现知识消失 | 交付文档与长期项目文档分别沉淀 |
+| 新增项目就重新发明一套流程 | 注册新项目或项目组，继续复用原有流程 |
+
+它不是一组“聪明提示词”，而是一套可以版本化维护的公司级协作方式：让人和 Agent 知道如何理解、修改、验证并记住跨项目工作。
+
+## 一个人覆盖完整开发流程
+
+| 阶段 | 已具备的能力 |
+|---|---|
+| 发现 | 将口头想法、PRD、截图和原始需求整理成结构化方案 |
+| 设计 | 生成 UI 方向、交互原型、技术设计和编码前置摘要 |
+| 开发 | 将后端、管理平台、移动端、官网或未来项目路由到正确上下文 |
+| 验证 | 执行代码评审、安全评审、功能测试、Playwright E2E 和验收流程 |
+| 记忆 | 沉淀需求、决策、模块知识、回归经验和变更记录 |
+| 运维协作 | 预览、拉取、更新并协调多个仓库，不合并它们的 Git 历史 |
+
+当前仓库内置 **12 个专业 Agents、10 个可复用 Skills、11 条路由与工作流规则**，帮助独立开发者或小型技术团队覆盖原本分散在多个岗位中的研发流程。
+
+## 不止四个项目
+
+默认注册表提供一个后端和三个客户端作为起点：
+
+```text
+api · fornt_admin · m_front · pc_fornt
+```
+
+这是起步拓扑，不是能力上限。`repos.conf` 支持多个工作区分组和任意项目 ID；路由注册表、项目级 `AGENTS.md` 与文档索引也可以继续扩展，用于更多服务端、客户端、内部工具、数据项目、自动化仓库或独立产品线。
+
+```text
+统一协作层
+├── 产品组 A
+│   ├── api
+│   ├── admin
+│   └── mobile
+├── 产品组 B
+│   ├── service
+│   └── website
+└── 内部系统
+    ├── data
+    ├── automation
+    └── operations
+```
+
+扩展方式见[工作区架构](./docs/guides/workspace-architecture.md)。
+
+## 系统如何运转
+
+```text
+你的需求
+    ↓
+识别角色：产品 / 设计 / 后端 / 前端 / QA / 评审 / 文档
+    ↓
+识别范围：单个项目 / 一个项目组 / 公司级范围
+    ↓
+加载上下文：AGENTS.md → 文档索引 → 模块知识 → 真实代码
+    ↓
+实现与验证
+    ↓
+将知识留给下一次任务
+```
+
+五条核心约束保证系统不会失控：
+
+1. 只有一个权威项目路由注册表。
+2. 使用真实后端契约，不以 Mock 代替联调。
+3. 一次需求的交付资料与项目长期知识分开维护。
+4. 各业务仓库继续保留独立版本历史。
+5. 每次实现都以匹配风险的验证和文档沉淀收尾。
+
+## 工作区结构
 
 ```text
 monorepo-workflow/
-├── AGENTS.md              # 人类 / Agent 总入口与安全变更边界
+├── AGENTS.md              # 公司级路由与安全变更边界
 ├── .codex/                # Rules、Agents、Skills 的权威来源
-├── .cursor/               # 受支持 .codex 资产的生成镜像
-├── api/                   # 后端入口与长期项目文档
-├── fornt_admin/           # 管理平台入口与项目文档
-├── m_front/               # 移动 / H5 门户入口与项目文档
-├── pc_fornt/              # PC 官网入口与项目文档
+├── .cursor/               # 生成的兼容镜像
+├── api/                   # 默认后端项目上下文
+├── fornt_admin/           # 默认管理平台项目上下文
+├── m_front/               # 默认移动 / H5 项目上下文
+├── pc_fornt/              # 默认 PC 官网项目上下文
 ├── docs/
-│   ├── guides/            # 稳定公开指南
-│   ├── general/           # 跨端需求交付资料
-│   └── _template/         # 新需求复制使用的文档骨架
-├── scripts/               # 维护与校验脚本
-└── tests/                 # 回归测试
+│   ├── guides/            # 公开使用与架构指南
+│   ├── general/           # 跨项目需求交付资料
+│   └── _template/         # 新需求文档骨架
+├── scripts/               # 维护和验证脚本
+└── tests/                 # 回归检查
 ```
 
-根仓库追踪协作资产和项目文档，真实业务源码可以继续放在四个独立 Git 仓库中。`fornt_admin` 与 `pc_fornt` 是为兼容现有模板保留的目录名；Agent 路由同时识别 `front_admin` 与 `pc_front`。
+真实业务源码可以继续放在不同 Git 仓库中；根仓库只维护跨仓库协作系统，以及运行这套系统所需的知识。
 
-完整的所有权边界和信息流见[工作区架构](./docs/guides/workspace-architecture.md)。
+## 文档导航
 
-## 四端职责
-
-| 项目 | 目录 | 职责 |
-|---|---|---|
-| 后端 API | `api/` | 接口、鉴权、领域服务、数据访问、异步任务 |
-| 管理平台 | `fornt_admin/` | 面向运营、管理员和内部业务人员 |
-| 门户端 | `m_front/` | 面向用户的移动端、H5 或门户体验 |
-| PC 官网 | `pc_fornt/` | 公开官网、营销站或品牌站 |
-
-## 文档与 Agent 工作流
-
-| 你要做什么 | 从这里开始 |
+| 目标 | 从这里开始 |
 |---|---|
-| 了解人和 Agent 的执行方式 | [Agent 工作流](./docs/guides/agent-workflow.md) |
-| 新建一个跨端需求 | [文档中心](./docs/README.md) |
-| 配置真实业务仓库 | [仓库配置](./docs/guides/repository-configuration.md) |
-| 理解项目边界 | [工作区架构](./docs/guides/workspace-architecture.md) |
+| 接入已有业务仓库 | [快速开始](./docs/guides/quick-start.md) |
+| 配置项目组与仓库来源 | [仓库配置](./docs/guides/repository-configuration.md) |
+| 理解人和 Agent 如何协作 | [Agent 工作流](./docs/guides/agent-workflow.md) |
+| 增加项目或理解所有权边界 | [工作区架构](./docs/guides/workspace-architecture.md) |
+| 新建跨项目需求 | [文档中心](./docs/README.md) |
 | 扩展 Codex / Cursor 配置 | [.codex 说明](./.codex/README.md) |
 | 准备公开发布 | [开源发布检查清单](./docs/guides/open-source-release-checklist.md) |
 
-跨端需求文档统一放在：
+## 三种使用方式
 
-```text
-docs/general/{需求名称}/
-├── 需求文档/
-├── 技术设计方案/
-└── coding-plan/
-```
+| 方式 | 适合场景 |
+|---|---|
+| 直接采用完整模板 | 独立开发者或小团队启动多项目产品 |
+| 接入已有独立仓库 | 公司已有相互隔离的后端、前端或服务仓库 |
+| 只采用协作模型 | 已有 Monorepo，只需要路由、文档与验证规范 |
 
-各端可长期复用的实现知识放在各自的 `{project}/docs/` 中，从而避免“某次需求的交付过程”和“项目长期知识”混在一起。
-
-## 唯一事实来源
-
-- 根目录 `AGENTS.md` 定义工作区路由、文档读取顺序和安全变更边界。
-- `.codex/` 是 Rules、专用 Agents 和 Skills 的权威来源。
-- `.cursor/` 是生成的兼容镜像，不是第二个手工维护入口。
-- `docs/general/` 记录需求交付，`{project}/docs/` 记录长期实现知识。
-- 前端必须对接真实 `api/` 契约，Mock 不能替代联调。
-
-修改 `.codex/README.md`、`.codex/rules/` 或 `.codex/agents/` 后执行：
-
-```bash
-./scripts/sync-codex-to-cursor.sh
-```
+不要在同一工具中重复安装多份相同规则或 Skills。应确定唯一权威来源，并说明哪些目录由同步生成。
 
 ## 验证
 
@@ -144,20 +176,13 @@ bash tests/pull_repos_test.sh
 python3 scripts/check_markdown_links.py
 ```
 
-GitHub Actions 会通过 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) 执行相同检查。
+GitHub Actions 会执行相同的[基础检查](./.github/workflows/ci.yml)。
 
-## 项目状态与路线图
+## 项目状态
 
-当前仓库已提供可复用的协调层、文档体系、仓库拉取工具和 Codex / Cursor 工作流资产；它不会初始化具体业务框架，也不会部署业务服务。
+当前项目提供协调层、仓库工具、文档体系和 Codex / Cursor 工作流资产；它不会替你生成完整业务应用，也不会自动部署生产服务。
 
-后续计划：
-
-- 增加可选的后端和前端项目初始化脚本。
-- 补充仓库安全与配置边界测试。
-- 为工作流变更建立版本化发布和迁移说明。
-- 完善更多可复用 Agent 工作流与验收资产。
-
-重要变更记录见 [CHANGELOG.md](./CHANGELOG.md)。
+重要变更见 [CHANGELOG.md](./CHANGELOG.md)，首发前待处理事项见[开源发布检查清单](./docs/guides/open-source-release-checklist.md)。
 
 ## 社区协作
 
@@ -165,4 +190,4 @@ GitHub Actions 会通过 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml
 
 ## 许可证
 
-本仓库原创内容采用 [MIT License](./LICENSE)。内置或改编的第三方组件继续遵循其原始版权和许可证条款，详见 [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md)。
+本仓库原创内容采用 [MIT License](./LICENSE)。内置或改编的第三方组件继续遵循原始条款，详见 [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md)。
