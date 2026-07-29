@@ -4,8 +4,8 @@
 
 | 字段 | 内容 |
 |---|---|
-| 项目组 | h5 / bss / tiku / agency |
-| 子项目 | 例如 ahyk_h5_front |
+| 项目组 | general / 新增项目组 ID |
+| 子项目 | 例如 api / fornt_admin / m_front / pc_fornt |
 | 需求名称 |  |
 | 需求文档路径 |  |
 | 测试用例路径 |  |

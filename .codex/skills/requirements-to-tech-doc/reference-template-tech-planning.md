@@ -1,7 +1,7 @@
 # 模块技术规划文档骨架
 
-> 复制本骨架撰写 `docs/bss/{需求名称}/技术设计方案/{序号}-{模块}模块技术规划.md`。  
-> 完整示例见 `02-题库模块技术规划.md`、`01-首页模块技术规划.md`。
+> 复制本骨架撰写 `docs/general/{需求名称}/技术设计方案/{序号}-{模块}模块技术规划.md`。
+> 示例文件请按当前仓库 `docs/_template/` 与四端项目 docs 实际索引生成。
 
 ```markdown
 ---
@@ -9,7 +9,7 @@
 功能模块：产品 - {模块中文名}
 规划状态：待实现
 关联设计图：
-  - docs/bss/{需求名称}/需求文档/设计图/{模块}/xxx.jpg
+  - docs/general/{需求名称}/需求文档/设计图/{模块}/xxx.jpg
 ---
 
 # {模块中文名} 技术规划文档
@@ -34,10 +34,10 @@
 
 ## 2. 页面结构与路由
 
-### 2.1 页面列表（bss_front）
+### 2.1 页面列表（fornt_admin / m_front / pc_fornt）
 | 页面名 | 路由 path（`/home` 子路由） | 说明 |
 |--------|--------------------------|------|
-| … | `/home/xxx` | 见 `bss_front/src/router/index.js` |
+| … | `/home/xxx` | 见命中前端项目的路由配置 |
 
 ### 2.2 页面导航流程
 \`\`\`
@@ -50,9 +50,9 @@
 
 ---
 
-## 3. UI 组件规划（bss_front）
+## 3. UI 组件规划（fornt_admin / m_front / pc_fornt）
 
-> 遵循 `docs/bss_front/架构说明.md`；复用 `table.vue`、`cus_dialog.vue` 等公共组件。
+> 遵循命中前端项目的 `AGENTS.md`、`docs/README.md` 与实际组件约定。
 
 ### 3.1 页面级组件
 | 区块 | 组件名 | Element Plus / 样式 | 备注 |
@@ -113,7 +113,7 @@ entity_a 1—N entity_b
 
 ---
 
-## 6. 状态管理（bss_front，可选）
+## 6. 状态管理（前端项目，可选）
 
 ### 6.1 Pinia / Vuex
 | Store | 职责 |
@@ -122,7 +122,7 @@ entity_a 1—N entity_b
 
 ---
 
-## 7. 后台管理功能（bss_front）
+## 7. 前端功能（fornt_admin / m_front / pc_fornt）
 
 | 页面 | views 目录 | api.js 函数 | 说明 |
 |------|-----------|-------------|------|
@@ -144,7 +144,7 @@ entity_a 1—N entity_b
 | 模块 | 子模块 | 优先级 | 预估工时 | 依赖 |
 |------|--------|--------|---------|------|
 | 后端 Service/Controller | … | P0 | 1d | - |
-| bss_front 页面/API | … | P0 | 2d | 后端接口就绪 |
+| 前端页面/API | … | P0 | 2d | 后端接口就绪 |
 
 ---
 

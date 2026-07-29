@@ -17,7 +17,7 @@
 ├─ 单一页面/小功能迭代（范围 < 1 模块）？
 │   └─ P3 调用 writing-tech-design-doc
 ├─ 仅管理端、无后端新接口？
-│   └─ 技术规划以 bss_front 页面/API 为主；后端 § 可引用已有 Domain 文档
+│   └─ 技术规划以 fornt_admin 页面/API 为主；后端 § 可引用已有 Domain 文档
 └─ 代码已落地、文档落后？
     └─ 不用本技能 → doc-updater
 ```
@@ -31,8 +31,8 @@
 |------|-----------|---------|---------|
 | 模块技术规划 | `{序号}-{模块}模块技术规划.md` | 全栈、产品、Agent | `coding-agent-team-fullstack` |
 | 模块文档骨架 | 注册表命中子项目 `{代码根}docs/modules/*` | 各端开发者 / `doc-updater` | `api-developer` / `front-developer`；编码后 §3～§6 以代码为准 |
-| 编码前置摘要 | `docs/{项目组ID}/{需求名}/coding-plan/{模块}-dev-brief.md` | 子 Agent | `api-developer`、`front-developer`；双端见 `coding-agent-team-fullstack` |
-| 前端技术设计 | `docs/{项目组ID}/{需求名}/技术设计方案/{需求名}前端技术设计文档.md` | 前端编码 | `writing-tech-design-doc` |
+| 编码前置摘要 | `docs/general/{需求名}/coding-plan/{模块}-dev-brief.md` | 子 Agent | `api-developer`、`front-developer`；双端见 `coding-agent-team-fullstack` |
+| 前端技术设计 | `docs/general/{需求名}/技术设计方案/{需求名}前端技术设计文档.md` | 前端编码 | `writing-tech-design-doc` |
 
 ## 范围边界写法
 
@@ -45,4 +45,4 @@
 **依赖其他模块**：…（只写接口契约，不展开实现）
 ```
 
-<!-- AIGC:cursor|author:沉香|lines:约40|dates:2026-06|功能说明:产出路由对齐ahyk_bss+bss_front双项目 -->
+<!-- AIGC:cursor|author:沉香|lines:约40|dates:2026-06|功能说明:产出路由迁移到general四端公开模板 -->

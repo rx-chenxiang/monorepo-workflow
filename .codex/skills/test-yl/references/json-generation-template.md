@@ -8,7 +8,7 @@
 {
   "meta": {
     "requirement_name": "需求名称",
-    "project": "bss",
+    "project": "general",
     "generated_date": "2026-07-06"
   },
   "test_cases": [

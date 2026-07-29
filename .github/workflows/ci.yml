@@ -23,6 +23,7 @@ jobs:
       - name: Check shell syntax
         run: |
           bash -n pull_repos.sh
+          bash -n scripts/configure_github_open_source_settings.sh
           bash -n scripts/sync-codex-to-cursor.sh
           bash -n tests/pull_repos_test.sh
 

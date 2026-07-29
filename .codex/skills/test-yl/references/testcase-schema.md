@@ -124,7 +124,7 @@ Excel 的 `测试用例` Sheet 表头必须严格按以下顺序输出：
 {
   "meta": {
     "requirement_name": "需求名称",
-    "project": "bss",
+    "project": "general",
     "generated_date": "2026-07-03"
   },
   "business_profile": {

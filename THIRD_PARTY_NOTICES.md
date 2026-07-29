@@ -13,9 +13,13 @@ The local Skill includes project-specific metadata and may differ from the upstr
 
 ## Huashu Design
 
+- Upstream: [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design)
 - Included path: `.codex/skills/huashu-design/`
 - License: MIT; see [the bundled license](./.codex/skills/huashu-design/LICENSE)
 - Copyright: Copyright (c) 2026 alchaincyf (花叔 · 花生)
+- Asset audit: checked on 2026-07-29 against the upstream `master` tree. The bundled audio assets under `.codex/skills/huashu-design/assets/` contain 6 BGM tracks and 37 SFX files; the same 43 `assets/(bgm|sfx)/*.mp3` paths are present in the MIT-licensed upstream repository.
+
+The local Skill may omit upstream demos or other nonessential files, but bundled code, scripts, starter assets, and audio retain the upstream MIT terms.
 
 ## UI UX Pro Max
 

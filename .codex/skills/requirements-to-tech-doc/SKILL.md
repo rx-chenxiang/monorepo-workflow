@@ -5,7 +5,7 @@ description: >-
   对齐本仓库 docs/ 体系与 .codex/rules 模块映射。产出模块技术规划、双端模块文档骨架或编码前置摘要。
   下游衔接 api-developer / front-developer / coding-agent-team-fullstack / doc-updater。
   触发：需求转技术文档、写技术规划、整理需求、模块技术方案、编码前文档准备、
-  或用户 @docs/{项目组ID}/{需求名称} 要求产出可开发文档时。
+  或用户 @docs/general/{需求名称} 要求产出可开发文档时。
 ---
 
 # 需求 → 技术文档转换
@@ -55,8 +55,8 @@ description: >-
 | `{代码目录}` / `{frontRoot}` | 后端代码根目录，如 `{子项目ID}/` | 前端代码根目录，如 `{frontId}/` |
 | `{模块文档}` | `{代码目录}docs/modules/README.md` 实际链接到的 Domain 文档 | `{frontRoot}docs/modules/README.md` 实际链接到的模块文档 |
 | `{项目文档}` | `{代码目录}AGENTS.md`、`{代码目录}docs/README.md` 及实际存在的子项目 docs | `{frontRoot}AGENTS.md`、`{frontRoot}docs/README.md` 及实际存在的子项目 docs |
-| `{项目组ID}` | 工作区项目组 ID（AGENTS.md「项目注册表」） | 同左 |
-| `{需求文档根}` | `docs/{项目组ID}/{需求名称}/` | 同左 |
+| `{项目组ID}` | 工作区 / 项目组 ID，默认 `general`（见 AGENTS.md「项目注册表」） | 同左 |
+| `{需求文档根}` | `docs/general/{需求名称}/`（新增项目组时才替换 `general`） | 同左 |
 
 技术规划与 dev-brief 中写路径时：**只写注册表命中的子项目实体 docs 路径**（开发 Agent 编码前必读）。需求文档目录约定见 [docs/README.md](../../../docs/README.md)。
 
@@ -253,8 +253,8 @@ description: >-
 - 开发 Agent：`.codex/agents/api-developer.md`、`.codex/agents/front-developer.md`、`.codex/agents/doc-updater.md`
 - 全栈编排：`.codex/skills/coding-agent-team-fullstack/SKILL.md`
 
-<!-- AIGC:cursor|author:沉香|lines:约95|dates:2026-06|功能说明:需求转技术文档对齐双项目docs/ahyk_bss与docs/bss_front，移除cool-uni与三端约定 -->
+<!-- AIGC:cursor|author:沉香|lines:约95|dates:2026-06|功能说明:需求转技术文档对齐双项目旧路径，后续迁移为公开版general四端模型 -->
 <!-- AIGC:cursor|author:沉香|lines:约115|dates:2026-06|功能说明:对齐api-developer/front-developer/doc-updater占位符、双路径、下游委派与dev-brief模板 -->
 <!-- AIGC:cursor|author:沉香|lines:30|dates:2026-06|功能说明:P1修复-新增交接就绪检查单(G1~G5)、双端dev-brief升为强制、质量自检补两条 -->
-<!-- AIGC:cursor|author:沉香|lines:约22|dates:2026-06|功能说明:去除bss/ahyk_bss/bss_front硬编码，统一为{项目组ID}/{需求文档根}等占位符 -->
+<!-- AIGC:cursor|author:沉香|lines:约22|dates:2026-06|功能说明:去除旧业务项目硬编码，统一为general需求文档根与四端占位符 -->
 <!-- AIGC:cursor|author:沉香|lines:约36|dates:2026-07|功能说明:需求转技术文档链路改为.codex与注册表命中的子项目实体docs口径，移除规则侧模块文档强制同步 -->

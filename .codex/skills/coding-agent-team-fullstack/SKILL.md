@@ -9,7 +9,7 @@ description: >-
   阶段四 doc-updater 文档同步 →
   阶段五汇总交付。
   触发：coding-agent-team-fullstack、全栈开发流水线、前后端一体开发、或设计文档已就绪需后端先行再管理端；
-  适用于 bss / tiku / agency 等已注册项目组（见 AGENTS.md）。
+  适用于 `general` 四端工作区或 AGENTS.md 中新增的已注册项目组。
 ---
 
 # Coding Agent Team Fullstack（全栈实现阶段团队编排）
@@ -18,8 +18,8 @@ description: >-
 
 用户**已完成需求分析与技术设计**，`{需求文档根}` 下技术设计方案与 coding-plan 已落盘，并明确触发本技能名称，或说明「后端先行、再管理端」。
 
-- **范围**：`AGENTS.md` 已注册的**项目组双端**（后端子项目 + 配对管理端前端），无移动端客户端。
-- **调度**：用户说项目组别名（如 bss / 题库中心 / 代理商系统）且需双端交付时，默认走本技能（见 `.codex/rules/project-routing.mdc`）。
+- **范围**：`AGENTS.md` 已注册的多端范围（默认 `api` + `fornt_admin`，按需求可扩展到 `m_front` / `pc_fornt`）。
+- **调度**：用户说 `full stack`、`all`、`四端`、`全栈` 或命中新增项目组别名且需多端交付时，默认走本技能（见 `.codex/rules/project-routing.mdc`）。
 - **不适用**：用户明确仅改一端 → 直接委派 `api-developer` 或 `front-developer`，勿强行走全栈流水线。
 
 **流水线**：后端开发 → 接口验证 + 库表测试数据 → 管理端编码 → 文档同步 → 汇总交付
@@ -43,9 +43,9 @@ description: >-
 
 | 占位符 | 含义 |
 |--------|------|
-| `{项目组ID}` | `AGENTS.md` 项目组 ID（如 `bss`、`tiku`、`agency`） |
-| `{需求名称}` | 与 `docs/{项目组ID}/` 下目录名一致 |
-| `{需求文档根}` | `docs/{项目组ID}/{需求名称}/` |
+| `{项目组ID}` | `AGENTS.md` 工作区 / 项目组 ID，默认 `general` |
+| `{需求名称}` | 与 `docs/general/` 下目录名一致 |
+| `{需求文档根}` | `docs/general/{需求名称}/` |
 | `{子项目ID}` / `{代码目录}` | 后端子项目 ID 与代码根（含尾斜杠） |
 | `{frontId}` / `{frontRoot}` | 管理端子项目 ID 与代码根（含尾斜杠） |
 | `{后端模块文档}` | `{代码目录}docs/modules/` 下由实际索引链接到的文档 |
@@ -92,7 +92,7 @@ description: >-
 
 - `{项目组ID}`、`{需求名称}`、业务目标
 - **必读**：`{需求文档根}技术设计方案/`、`{后端模块文档}`、`.codex/rules/project-workflow-api.mdc`
-- **禁止套用**：其他项目组的「业务别名 → Domain」映射表（如 bss 大表不可用于 `tiku_center_api`）
+- **禁止套用**：其他子项目的目录、鉴权、路由或 Domain 约定；以本次命中的 `{项目文档}` 为准
 - 接口清单：Controller@action、Service 方法、鉴权层级（以 `{项目文档}` 为准）
 - 实现范围与验收标准
 - **工程约束**：遵守 `{代码目录}` 分层；禁止改动项见 `{项目文档}`（如中间件链、多库连接配置等）
@@ -190,7 +190,7 @@ description: >-
 - 接口未通就启动前端，或用 Mock 顶替
 - 测试数据仅用 `test1/test2` 无业务含义
 - 虚构字段或偏离 Apifox / 模块文档 §4
-- 将 bss 的 Domain 映射或目录约定硬套到 tiku / agency
+- 将某一端的 Domain 映射或目录约定硬套到其他端
 
 ---
 
@@ -202,5 +202,5 @@ description: >-
 - 口语路由：`.codex/rules/project-routing.mdc`
 - 双端协作：`.codex/rules/multi-project-workspace.mdc`
 
-<!-- AIGC:cursor|author:沉香|lines:约175|dates:2026-06|功能说明:全栈流水线泛化——第零步占位符识别项目组/子项目/需求文档根，五阶段路径与约束改为docs/{项目组ID}/与{代码目录}/{frontRoot}，移除ahyk_bss/bss_front硬编码，附bss/tiku/agency速查表 -->
+<!-- AIGC:cursor|author:沉香|lines:约175|dates:2026-06|功能说明:全栈流水线泛化——第零步占位符识别工作区/子项目/需求文档根，五阶段路径与约束改为docs/general与{代码目录}/{frontRoot} -->
 <!-- AIGC:cursor|author:沉香|lines:约20|dates:2026-07|功能说明:全栈流水线文档同步阶段改为注册表命中的子项目实体docs口径，移除项目组速查表与规则侧docs/{id}/modules强制同步 -->

@@ -1,7 +1,7 @@
 {
   "meta": {
     "requirement_name": "客户分配优化",
-    "project": "bss",
+    "project": "general",
     "generated_date": "2026-07-06"
   },
   "test_cases": [
