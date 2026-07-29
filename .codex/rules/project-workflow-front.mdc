@@ -1,0 +1,60 @@
+---
+description: 前端开发流程（通用 fornt_admin / m_front / pc_fornt 子项目）
+globs: fornt_admin/**,m_front/**,pc_fornt/**,docs/general/**/coding-plan/**,docs/general/**/技术设计方案/**
+---
+
+# 前端 Workflow
+
+## 当前文件说明
+
+本规则用于 `fornt_admin/`、`m_front/`、`pc_fornt/` 三个前端子项目的页面、路由、组件、状态管理、接口对接、样式与文档同步工作。具体技术栈、目录结构与启动命令以目标子项目的 `AGENTS.md`、`docs/README.md` 和实际代码为准。
+
+## 触发条件
+
+用户提到 `前端`、`页面`、`路由`、`Vue`、`组件`、`管理平台`、`门户端`、`H5`、`官网`、`PC前端` 等前端开发语义时，加载本规则。
+
+## 目标端识别
+
+| 用户表述 | 目标目录 |
+|----------|----------|
+| 管理平台、管理后台、admin、fornt_admin | `fornt_admin/` |
+| 门户端、移动端、H5、C端、m_front | `m_front/` |
+| 官网、PC官网、PC前端、pc_fornt | `pc_fornt/` |
+| 仅说前端且无法从路径判断 | 先向用户确认端别 |
+
+## 编码前必读
+
+1. 根目录 `AGENTS.md`：确认当前任务命中的前端子项目。
+2. `{frontRoot}/AGENTS.md`：确认目标前端边界。
+3. `{frontRoot}/docs/README.md`：确认文档入口。
+4. `{frontRoot}/docs/modules/README.md`：通过实际索引定位页面或模块文档。
+5. `{frontRoot}/docs/codebase/README.md` 与 `{frontRoot}/docs/rules/README.md`：按任务读取相关专题。
+6. 若涉及接口，读取 `api/docs/modules/README.md` 或实际接口契约文档。
+
+## 实现原则
+
+1. 遵循项目现有技术栈、组件库、状态管理、路由和请求封装。
+2. 优先复用已有页面结构、业务组件和 API 方法，避免新增重复抽象。
+3. 不主动修改全局请求封装、登录态、权限路由、构建配置，除非需求明确要求。
+4. 涉及接口联调时，以 `api/` 实际契约为准，禁止前端 Mock。
+5. UI 调整保持当前项目风格一致，确保移动端和桌面端文本不重叠、不溢出。
+
+## 开发流程
+
+1. 定位页面、路由、组件、状态和 API 文件。
+2. 读取目标模块上下文，确认数据流、生命周期、权限状态和异常分支。
+3. 做最小范围实现，保持命名和代码组织与现有项目一致。
+4. 补充必要中文注释，避免无意义注释。
+5. 执行可用的 lint、typecheck、unit 或构建命令；无法执行时说明原因。
+6. 同步目标前端 `docs/modules/` 或 `docs/codebase/` 中实际存在的相关文档。
+
+## 自检清单
+
+- [ ] 是否命中了正确前端目录。
+- [ ] 是否避免跨端误改。
+- [ ] 是否保持接口契约与 `api/` 一致。
+- [ ] 是否覆盖加载、空态、错误态、权限态等必要状态。
+- [ ] 是否完成可执行的基础验证。
+- [ ] 是否同步模块文档或说明无需同步的原因。
+
+<!-- AIGC:cursor|author:沉香|lines:约72|dates:2026-07|功能说明:前端workflow初始化为通用三前端规则，仅识别fornt_admin、m_front、pc_fornt -->

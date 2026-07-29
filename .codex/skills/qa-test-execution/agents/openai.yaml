@@ -1,0 +1,6 @@
+interface:
+  display_name: "QA 测试执行"
+  short_description: "默认用Codex Computer Use执行功能测试、记录缺陷并生成证据报告"
+  default_prompt: "Use $qa-test-execution to execute functional testing for this requirement and produce a test report."
+
+# AIGC:cursor|author:沉香|lines:约1|dates:2026-07|功能说明:更新技能展示文案，明确默认使用Codex Computer Use执行测试

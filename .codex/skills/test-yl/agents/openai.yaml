@@ -1,0 +1,4 @@
+interface:
+  display_name: "测试用例生成"
+  short_description: "从需求和技术文档生成可追溯测试用例、脑图和覆盖矩阵"
+  default_prompt: "Use $test-yl to generate traceable Chinese test cases from the requirement and technical documents."

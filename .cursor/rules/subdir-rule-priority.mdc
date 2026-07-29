@@ -1,0 +1,26 @@
+---
+description: 子目录规则优先级（通用四端，按 AGENTS.md 注册表识别子项目）
+alwaysApply: true
+---
+
+# 子目录规则优先级
+
+## 当前文件说明
+
+适用于 **通用项目工作区** 内四端并行开发：后端 API、管理平台前端、门户端前端、官网前端。**子项目代码目录以 `AGENTS.md` 注册表为准**，本规则用于确定目录命中后的 workflow 优先级。
+
+## 优先级规则
+
+0. **口语项目路由优先**：用户提到项目名或端别时，先执行 `project-routing.mdc`（按 `AGENTS.md` 注册表匹配项目组/子项目别名），再应用下列路径规则。
+1. **子目录专属规则优先于根目录通用规则**。
+2. 当处理 `api/**` 文件时，优先匹配 `project-workflow-api.mdc`。
+3. 当处理 `fornt_admin/**`、`m_front/**`、`pc_fornt/**` 文件时，优先匹配 `project-workflow-front.mdc`。
+4. 当处理任一 `{代码目录}docs/**` 时，先按根 `AGENTS.md`「子项目文档优先级」读取该子项目 `AGENTS.md` 与实际文档索引，再遵循对应 workflow 的文档同步约定。
+5. 模块文档、架构文档、专题与 skill 均以子项目 `docs/README.md` 和实际目录为准，不得引用虚拟 `docs/{子项目ID}/**` 或假定模块单文件路径。
+6. 当处理根 `docs/general/**`（需求文档、技术设计方案、coding-plan）时，遵循 `project-workflow-product.mdc`；设计资产另见 `project-workflow-ui.mdc`。
+7. **任一子项目子目录下的 `.codex/` 规则目录已废弃**，Agent workflow 以仓库根 `.codex/rules/` 为准；子项目只维护版本化 `AGENTS.md` 与 `docs/` 知识。
+8. 根目录 `multi-project-workspace.mdc` 作为跨端协作兜底，不覆盖子项目细则。
+
+> **当前已注册子项目目录（快照，以 `AGENTS.md` 为准）**：后端 `api/`；前端 `fornt_admin/`、`m_front/`、`pc_fornt/`。
+
+<!-- AIGC:cursor|author:沉香|lines:约32|dates:2026-07|功能说明:子目录优先级初始化为通用四端目录，仅识别api、fornt_admin、m_front、pc_fornt -->

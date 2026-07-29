@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "requirement_name": "订单回调补偿",
+    "project": "bss",
+    "generated_date": "2026-07-06"
+  },
+  "test_cases": [
+    {
+      "case_id": "TC-001",
+      "module": "订单中心",
+      "platform": "接口",
+      "page": "订单回调接口",
+      "function_module": "支付成功回调",
+      "test_dimension": "正常场景",
+      "title": "验证支付成功回调可更新订单状态",
+      "precondition": "存在待支付订单 O20260706001；支付渠道返回成功回调签名有效。",
+      "test_data": "订单：O20260706001，状态=待支付；回调：pay_status=success，amount=19900。",
+      "steps": [
+        "在【订单回调接口】页面，进行【调用支付成功回调接口】操作。",
+        "在【订单回调接口】页面，进行【查询订单状态和支付流水】操作。"
+      ],
+      "expected": [
+        "接口返回 code=0，回调处理成功。",
+        "订单状态更新为已支付，payment_record 写入成功流水，日志记录回调报文摘要。"
+      ],
+      "verification_layer": "接口：paymentCallback 返回 code=0；数据库：orders.status=paid，payment_record.status=success；日志：记录回调流水号。",
+      "requirement_id": "REQ-001",
+      "test_point_id": "TP-001",
+      "priority": "P0",
+      "type": "接口测试",
+      "tags": ["支付", "回调", "订单状态"],
+      "owner": "系统生成",
+      "remark": "高风险资金链路。",
+      "source_doc": "需求文档/订单回调补偿 PRD.md",
+      "source_heading": "2.1 支付成功回调",
+      "source_excerpt": "支付渠道成功回调后，系统需更新订单状态并记录支付流水。"
+    },
+    {
+      "case_id": "TC-002",
+      "module": "订单中心",
+      "platform": "接口",
+      "page": "订单回调接口",
+      "function_module": "重复回调",
+      "test_dimension": "连点测试",
+      "title": "验证重复支付成功回调保持幂等",
+      "precondition": "订单 O20260706002 已被第一次成功回调处理。",
+      "test_data": "订单：O20260706002，状态=已支付；重复回调：相同 channel_trade_no。",
+      "steps": [
+        "在【订单回调接口】页面，进行【连续发送 3 次相同支付成功回调】操作。",
+        "在【订单回调接口】页面，进行【查询订单、流水和日志】操作。"
+      ],
+      "expected": [
+        "接口均返回成功或已处理，不触发重复业务变更。",
+        "订单状态保持已支付，payment_record 不重复插入有效流水，日志记录重复回调。"
+      ],
+      "verification_layer": "接口：paymentCallback 重复请求返回已处理；数据库：payment_record 唯一流水不重复；日志：重复回调有记录。",
+      "requirement_id": "REQ-001",
+      "test_point_id": "TP-002",
+      "priority": "P1",
+      "type": "稳定性测试",
+      "tags": ["幂等", "重复回调"],
+      "owner": "系统生成",
+      "remark": "高风险资金链路。",
+      "source_doc": "技术设计方案/订单回调补偿技术方案.md",
+      "source_heading": "3.2 幂等设计",
+      "source_excerpt": "支付回调按渠道流水号做幂等控制，重复回调不得重复更新订单。"
+    },
+    {
+      "case_id": "TC-003",
+      "module": "订单中心",
+      "platform": "定时任务",
+      "page": "回调补偿任务",
+      "function_module": "失败补偿",
+      "test_dimension": "异常场景",
+      "title": "验证回调处理失败后补偿任务可重试",
+      "precondition": "存在回调处理失败记录 F20260706001；补偿任务开关=开启。",
+      "test_data": "失败记录：F20260706001，retry_count=0；配置：callback_compensate=on。",
+      "steps": [
+        "在【回调补偿任务】页面，进行【触发回调补偿任务】操作。",
+        "在【回调补偿任务】页面，进行【查询失败记录状态和任务日志】操作。"
+      ],
+      "expected": [
+        "补偿任务读取失败记录并重新处理。",
+        "处理成功后失败记录状态更新为已补偿，retry_count 增加，任务日志记录执行结果。"
+      ],
+      "verification_layer": "数据库：callback_failure.status=compensated，retry_count 增加；日志：补偿任务记录执行结果；队列：无残留失败消息。",
+      "requirement_id": "REQ-002",
+      "test_point_id": "TP-003",
+      "priority": "P1",
+      "type": "稳定性测试",
+      "tags": ["定时任务", "补偿"],
+      "owner": "系统生成",
+      "remark": "高风险资金链路。",
+      "source_doc": "需求文档/订单回调补偿 PRD.md",
+      "source_heading": "2.2 失败补偿",
+      "source_excerpt": "回调处理失败时，补偿任务需按失败记录重试处理。"
+    }
+  ],
+  "coverage_matrix": [
+    {
+      "requirement_id": "REQ-001",
+      "requirement_name": "支付回调处理",
+      "feature": "支付成功回调更新订单状态和流水",
+      "api_or_table": "paymentCallback; orders; payment_record",
+      "test_point_id": "TP-001",
+      "linked_case_ids": "TC-001",
+      "coverage_status": "已覆盖",
+      "description": "覆盖成功回调、订单状态、支付流水和日志。",
+      "source_doc": "需求文档/订单回调补偿 PRD.md",
+      "source_heading": "2.1 支付成功回调",
+      "source_excerpt": "支付渠道成功回调后，系统需更新订单状态并记录支付流水。"
+    },
+    {
+      "requirement_id": "REQ-001",
+      "requirement_name": "支付回调处理",
+      "feature": "重复回调保持幂等",
+      "api_or_table": "paymentCallback; payment_record",
+      "test_point_id": "TP-002",
+      "linked_case_ids": "TC-002",
+      "coverage_status": "已覆盖",
+      "description": "覆盖重复回调和幂等处理。",
+      "source_doc": "技术设计方案/订单回调补偿技术方案.md",
+      "source_heading": "3.2 幂等设计",
+      "source_excerpt": "支付回调按渠道流水号做幂等控制，重复回调不得重复更新订单。"
+    },
+    {
+      "requirement_id": "REQ-002",
+      "requirement_name": "失败补偿任务",
+      "feature": "回调失败记录可被补偿任务重试",
+      "api_or_table": "callback_failure; compensatePaymentCallbackJob",
+      "test_point_id": "TP-003",
+      "linked_case_ids": "TC-003",
+      "coverage_status": "已覆盖",
+      "description": "覆盖失败补偿、重试次数和任务日志。",
+      "source_doc": "需求文档/订单回调补偿 PRD.md",
+      "source_heading": "2.2 失败补偿",
+      "source_excerpt": "回调处理失败时，补偿任务需按失败记录重试处理。"
+    }
+  ],
+  "review_report": [
+    {
+      "dimension": "覆盖度",
+      "result": "通过",
+      "description": "2 个需求、3 个测试点、3 条用例均已覆盖。"
+    },
+    {
+      "dimension": "主流程",
+      "result": "通过",
+      "description": "已覆盖支付成功回调主流程。"
+    },
+    {
+      "dimension": "异常",
+      "result": "通过",
+      "description": "已覆盖回调失败补偿。"
+    },
+    {
+      "dimension": "权限",
+      "result": "待确认",
+      "description": "回调接口鉴权签名规则需联调环境确认。"
+    },
+    {
+      "dimension": "接口",
+      "result": "通过",
+      "description": "已覆盖 paymentCallback 接口响应和重复请求。"
+    },
+    {
+      "dimension": "数据表",
+      "result": "通过",
+      "description": "已覆盖 orders、payment_record、callback_failure 数据核验。"
+    },
+    {
+      "dimension": "优先级",
+      "result": "部分通过",
+      "description": "P0/P1 占比 3/3 超过 30%，原因是支付、订单状态和补偿均属于高风险资金链路，需版本必测。"
+    },
+    {
+      "dimension": "待确认",
+      "result": "待确认",
+      "description": "需人工确认支付渠道沙箱回调报文、签名密钥和补偿任务触发方式。"
+    }
+  ],
+  "business_profile": {
+    "terms": ["订单回调", "支付流水", "补偿任务"],
+    "roles": ["支付渠道", "系统任务"],
+    "rules": ["支付成功回调更新订单状态", "重复回调必须幂等", "失败记录由补偿任务重试"],
+    "interfaces": ["paymentCallback"],
+    "tables": ["orders", "payment_record", "callback_failure"],
+    "risks": ["支付", "订单", "重复回调", "补偿任务"],
+    "assumptions": ["回调签名规则和沙箱报文需人工确认"]
+  }
+}

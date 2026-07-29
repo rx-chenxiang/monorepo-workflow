@@ -1,0 +1,6 @@
+interface:
+  display_name: "前端 E2E 自动化测试"
+  short_description: "通用前端代码化自动化测试落地规范"
+  default_prompt: "使用 $front-e2e-testing 为前端项目搭建 Playwright E2E 或组件自动化测试。"
+
+# AIGC:cursor|author:沉香|lines:约4|dates:2026-07|功能说明:更新Skill界面元数据，明确定位为代码化自动化测试

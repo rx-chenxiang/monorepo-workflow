@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "requirement_name": "客户分配优化",
+    "project": "bss",
+    "generated_date": "2026-07-06"
+  },
+  "test_cases": [
+    {
+      "case_id": "TC-001",
+      "module": "客户管理",
+      "platform": "后台",
+      "page": "客户分配",
+      "function_module": "页面入口",
+      "test_dimension": "功能入口",
+      "title": "验证有权限主管可进入客户分配页面",
+      "precondition": "测试环境存在销售主管 A，已授予客户分配菜单权限。",
+      "test_data": "账号：销售主管 A；权限：客户分配菜单=开启。",
+      "steps": [
+        "在【客户分配】页面，进行【使用销售主管 A 登录后台并打开客户管理菜单】操作。",
+        "在【客户分配】页面，进行【点击客户分配菜单】操作。"
+      ],
+      "expected": [
+        "客户管理菜单展示客户分配入口。",
+        "页面正常打开，列表默认加载本组织待分配客户。"
+      ],
+      "verification_layer": "页面：菜单入口可见，客户分配页面正常加载；接口：customerAssignList 返回 code=0。",
+      "requirement_id": "REQ-001",
+      "test_point_id": "TP-001",
+      "priority": "P0",
+      "type": "冒烟测试",
+      "tags": ["入口", "权限"],
+      "owner": "系统生成",
+      "remark": "无",
+      "source_doc": "需求文档/客户分配优化 PRD.md",
+      "source_heading": "3.1 页面入口",
+      "source_excerpt": "有客户分配权限的主管可在客户管理下进入客户分配页面。"
+    },
+    {
+      "case_id": "TC-002",
+      "module": "客户管理",
+      "platform": "后台",
+      "page": "客户分配",
+      "function_module": "批量分配",
+      "test_dimension": "正常场景",
+      "title": "验证主管可批量分配本组织待分配客户",
+      "precondition": "销售主管 A 已登录；存在 3 条本组织待分配客户；客户分配开关=开启。",
+      "test_data": "账号：销售主管 A；数据：本组织待分配客户 3 条；配置：客户分配开关=开启。",
+      "steps": [
+        "在【客户分配】页面，进行【勾选 3 条本组织待分配客户】操作。",
+        "在【客户分配】页面，进行【选择销售 B 并提交批量分配】操作。"
+      ],
+      "expected": [
+        "3 条客户被选中，批量分配按钮可点击。",
+        "页面提示分配成功，列表负责人刷新为销售 B，接口返回 code=0，数据库 customer.owner_id 更新。"
+      ],
+      "verification_layer": "页面：成功提示与列表负责人刷新；接口：assignCustomer 返回 code=0；数据库：customer.owner_id 更新，operation_log 记录操作人。",
+      "requirement_id": "REQ-001",
+      "test_point_id": "TP-002",
+      "priority": "P2",
+      "type": "功能测试",
+      "tags": ["批量分配", "数据一致性"],
+      "owner": "系统生成",
+      "remark": "无",
+      "source_doc": "需求文档/客户分配优化 PRD.md",
+      "source_heading": "3.2 批量分配",
+      "source_excerpt": "主管可勾选本组织待分配客户并批量分配给销售。"
+    },
+    {
+      "case_id": "TC-003",
+      "module": "客户管理",
+      "platform": "后台",
+      "page": "客户分配",
+      "function_module": "批量分配",
+      "test_dimension": "异常场景",
+      "title": "验证跨组织客户不可被批量分配",
+      "precondition": "销售主管 A 已登录；列表中通过接口构造 1 条跨组织待分配客户。",
+      "test_data": "账号：销售主管 A；数据：本组织客户 1 条、跨组织客户 1 条。",
+      "steps": [
+        "在【客户分配】页面，进行【尝试勾选跨组织客户并提交分配】操作。",
+        "在【客户分配】页面，进行【查看错误提示和列表数据】操作。"
+      ],
+      "expected": [
+        "系统拒绝跨组织客户分配，接口返回权限或数据范围错误。",
+        "页面展示失败原因，跨组织客户负责人不变，数据库无越权更新。"
+      ],
+      "verification_layer": "页面：失败提示；接口：assignCustomer 返回 403 或数据范围错误；数据库：跨组织 customer.owner_id 不变。",
+      "requirement_id": "REQ-001",
+      "test_point_id": "TP-003",
+      "priority": "P2",
+      "type": "安全性测试",
+      "tags": ["跨组织", "越权"],
+      "owner": "系统生成",
+      "remark": "无",
+      "source_doc": "需求文档/客户分配优化 PRD.md",
+      "source_heading": "3.3 数据范围",
+      "source_excerpt": "主管只能操作本组织范围内的客户。"
+    },
+    {
+      "case_id": "TC-004",
+      "module": "客户管理",
+      "platform": "后台",
+      "page": "客户分配",
+      "function_module": "批量分配",
+      "test_dimension": "连点测试",
+      "title": "验证连续点击提交不会重复分配",
+      "precondition": "销售主管 A 已登录；存在 2 条本组织待分配客户。",
+      "test_data": "账号：销售主管 A；数据：本组织待分配客户 2 条。",
+      "steps": [
+        "在【客户分配】页面，进行【勾选 2 条待分配客户并选择销售 B】操作。",
+        "在【客户分配】页面，进行【连续快速点击提交按钮 3 次】操作。"
+      ],
+      "expected": [
+        "提交按钮进入 loading 或禁用态。",
+        "只产生一次有效分配，接口具备幂等处理，操作日志不重复记录。"
+      ],
+      "verification_layer": "页面：按钮 loading 或禁用；接口：重复请求只成功一次；数据库：operation_log 无重复有效记录。",
+      "requirement_id": "REQ-001",
+      "test_point_id": "TP-004",
+      "priority": "P2",
+      "type": "稳定性测试",
+      "tags": ["连点", "幂等"],
+      "owner": "系统生成",
+      "remark": "无",
+      "source_doc": "技术设计方案/客户分配优化技术方案.md",
+      "source_heading": "4.2 幂等处理",
+      "source_excerpt": "批量分配提交按钮需防重复提交，后端按请求批次做幂等保护。"
+    }
+  ],
+  "coverage_matrix": [
+    {
+      "requirement_id": "REQ-001",
+      "requirement_name": "客户分配优化",
+      "feature": "有权限主管可进入客户分配页面",
+      "api_or_table": "customerAssignList",
+      "test_point_id": "TP-001",
+      "linked_case_ids": "TC-001",
+      "coverage_status": "已覆盖",
+      "description": "覆盖菜单入口、页面加载和列表接口。",
+      "source_doc": "需求文档/客户分配优化 PRD.md",
+      "source_heading": "3.1 页面入口",
+      "source_excerpt": "有客户分配权限的主管可在客户管理下进入客户分配页面。"
+    },
+    {
+      "requirement_id": "REQ-001",
+      "requirement_name": "客户分配优化",
+      "feature": "主管批量分配本组织待分配客户",
+      "api_or_table": "assignCustomer; customer; operation_log",
+      "test_point_id": "TP-002",
+      "linked_case_ids": "TC-002",
+      "coverage_status": "已覆盖",
+      "description": "覆盖批量分配成功、接口响应和数据库负责人更新。",
+      "source_doc": "需求文档/客户分配优化 PRD.md",
+      "source_heading": "3.2 批量分配",
+      "source_excerpt": "主管可勾选本组织待分配客户并批量分配给销售。"
+    },
+    {
+      "requirement_id": "REQ-001",
+      "requirement_name": "客户分配优化",
+      "feature": "跨组织客户不可被分配",
+      "api_or_table": "assignCustomer; customer",
+      "test_point_id": "TP-003",
+      "linked_case_ids": "TC-003",
+      "coverage_status": "已覆盖",
+      "description": "覆盖跨组织越权操作被拒绝。",
+      "source_doc": "需求文档/客户分配优化 PRD.md",
+      "source_heading": "3.3 数据范围",
+      "source_excerpt": "主管只能操作本组织范围内的客户。"
+    },
+    {
+      "requirement_id": "REQ-001",
+      "requirement_name": "客户分配优化",
+      "feature": "批量分配防重复提交",
+      "api_or_table": "assignCustomer; operation_log",
+      "test_point_id": "TP-004",
+      "linked_case_ids": "TC-004",
+      "coverage_status": "已覆盖",
+      "description": "覆盖连点、接口幂等和操作日志去重。",
+      "source_doc": "技术设计方案/客户分配优化技术方案.md",
+      "source_heading": "4.2 幂等处理",
+      "source_excerpt": "批量分配提交按钮需防重复提交，后端按请求批次做幂等保护。"
+    }
+  ],
+  "review_report": [
+    {
+      "dimension": "覆盖度",
+      "result": "通过",
+      "description": "1 个需求、4 个测试点、4 条用例均已覆盖。"
+    },
+    {
+      "dimension": "主流程",
+      "result": "通过",
+      "description": "已覆盖入口和批量分配主流程。"
+    },
+    {
+      "dimension": "异常",
+      "result": "通过",
+      "description": "已覆盖跨组织越权异常。"
+    },
+    {
+      "dimension": "权限",
+      "result": "通过",
+      "description": "已覆盖菜单权限、数据范围权限和跨组织隔离。"
+    },
+    {
+      "dimension": "接口",
+      "result": "通过",
+      "description": "已覆盖 customerAssignList 和 assignCustomer 接口核验。"
+    },
+    {
+      "dimension": "数据表",
+      "result": "通过",
+      "description": "已覆盖 customer 和 operation_log 的数据核验。"
+    },
+    {
+      "dimension": "待确认",
+      "result": "待确认",
+      "description": "测试账号、组织树和开关配置需人工准备。"
+    }
+  ],
+  "business_profile": {
+    "terms": ["客户分配", "待分配客户"],
+    "roles": ["销售主管", "销售"],
+    "rules": ["销售主管只能操作本组织客户", "批量分配需防重复提交"],
+    "interfaces": ["customerAssignList", "assignCustomer"],
+    "tables": ["customer", "operation_log"],
+    "risks": ["跨组织越权", "批量操作", "重复提交"],
+    "assumptions": ["测试账号、组织树和开关配置需人工准备"]
+  }
+}

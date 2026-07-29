@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex.local/skills/test-yl/testcase.schema.json",
+  "title": "test-yl testcase asset",
+  "type": "object",
+  "required": ["meta", "test_cases", "coverage_matrix", "review_report"],
+  "additionalProperties": true,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["requirement_name", "project", "generated_date"],
+      "additionalProperties": true,
+      "properties": {
+        "requirement_name": { "type": "string", "minLength": 1 },
+        "project": { "type": "string", "minLength": 1 },
+        "generated_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        }
+      }
+    },
+    "test_cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/test_case" }
+    },
+    "coverage_matrix": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/coverage_item" }
+    },
+    "review_report": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/review_item" }
+    },
+    "business_profile": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "terms": { "$ref": "#/$defs/string_list" },
+        "roles": { "$ref": "#/$defs/string_list" },
+        "rules": { "$ref": "#/$defs/string_list" },
+        "interfaces": { "$ref": "#/$defs/string_list" },
+        "tables": { "$ref": "#/$defs/string_list" },
+        "risks": { "$ref": "#/$defs/string_list" },
+        "assumptions": { "$ref": "#/$defs/string_list" }
+      }
+    }
+  },
+  "$defs": {
+    "string_list": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"]
+    },
+    "test_type": {
+      "type": "string",
+      "enum": [
+        "回归测试",
+        "功能测试",
+        "性能测试",
+        "兼容性测试",
+        "易用性测试",
+        "安全性测试",
+        "稳定性测试",
+        "接口测试",
+        "自动化测试",
+        "安装部署测试",
+        "冒烟测试"
+      ]
+    },
+    "test_dimension": {
+      "type": "string",
+      "enum": [
+        "功能入口",
+        "UI展示",
+        "交互效果",
+        "更新机制",
+        "连点测试",
+        "断网测试",
+        "正常场景",
+        "异常场景",
+        "旧版本兼容",
+        "影响范围",
+        "测试经验"
+      ]
+    },
+    "source_trace": {
+      "type": "object",
+      "required": ["source_doc", "source_heading", "source_excerpt"],
+      "properties": {
+        "source_doc": { "type": "string", "minLength": 1 },
+        "source_heading": { "type": "string", "minLength": 1 },
+        "source_excerpt": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    },
+    "test_case": {
+      "allOf": [
+        { "$ref": "#/$defs/source_trace" },
+        {
+          "type": "object",
+          "required": [
+            "case_id",
+            "module",
+            "platform",
+            "page",
+            "function_module",
+            "test_dimension",
+            "title",
+            "precondition",
+            "steps",
+            "expected",
+            "requirement_id",
+            "test_point_id",
+            "priority",
+            "type"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "case_id": { "type": "string", "pattern": "^TC-\\d{3,}$" },
+            "module": { "type": "string", "minLength": 1 },
+            "platform": { "type": "string", "minLength": 1 },
+            "page": { "type": "string", "minLength": 1 },
+            "function_module": { "type": "string", "minLength": 1 },
+            "test_dimension": { "$ref": "#/$defs/test_dimension" },
+            "title": { "type": "string", "minLength": 1 },
+            "precondition": { "type": "string", "minLength": 1 },
+            "test_data": { "type": "string" },
+            "steps": {
+              "type": ["array", "string"],
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "expected": {
+              "type": ["array", "string"],
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "verification_layer": { "type": "string" },
+            "requirement_id": { "type": "string", "pattern": "^REQ-\\d{3,}$" },
+            "test_point_id": { "type": "string", "pattern": "^TP-\\d{3,}$" },
+            "priority": { "$ref": "#/$defs/priority" },
+            "type": { "$ref": "#/$defs/test_type" },
+            "tags": { "type": ["array", "string"] },
+            "owner": { "type": "string" },
+            "remark": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "coverage_item": {
+      "allOf": [
+        { "$ref": "#/$defs/source_trace" },
+        {
+          "type": "object",
+          "required": [
+            "requirement_id",
+            "requirement_name",
+            "feature",
+            "api_or_table",
+            "test_point_id",
+            "linked_case_ids",
+            "coverage_status",
+            "description"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "requirement_id": { "type": "string", "pattern": "^REQ-\\d{3,}$" },
+            "requirement_name": { "type": "string", "minLength": 1 },
+            "feature": { "type": "string", "minLength": 1 },
+            "api_or_table": { "type": "string", "minLength": 1 },
+            "test_point_id": { "type": "string", "pattern": "^TP-\\d{3,}$" },
+            "linked_case_ids": { "type": "string", "minLength": 1 },
+            "coverage_status": {
+              "type": "string",
+              "enum": ["已覆盖", "部分覆盖", "未覆盖", "待确认"]
+            },
+            "description": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "review_item": {
+      "type": "object",
+      "required": ["dimension", "result", "description"],
+      "additionalProperties": true,
+      "properties": {
+        "dimension": { "type": "string", "minLength": 1 },
+        "result": {
+          "type": "string",
+          "enum": ["通过", "部分通过", "未通过", "待确认"]
+        },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

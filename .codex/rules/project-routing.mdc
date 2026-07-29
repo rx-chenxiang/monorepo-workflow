@@ -1,0 +1,119 @@
+---
+description: 口语 → 工作角色(workflow) + 项目范围 → 规则与 docs（通用四端）
+alwaysApply: true
+---
+
+# 项目口语路由（统一 AI 调度）
+
+## 当前文件说明
+
+用户用自然语言指代**做什么（产品/设计/测试/编码）**和**改哪里（api / fornt_admin / m_front / pc_fornt）**时，**必须先执行本规则**，再 Read 对应 workflow 与模块文档。项目注册表见 `AGENTS.md`。
+
+---
+
+## 第零步：识别工作角色（workflow 类型）
+
+按下列顺序匹配（**命中即加载对应 workflow**；可与下文项目范围叠加）：
+
+| 用户表述含（任一词） | workflow 规则 | 主要 docs / Skill |
+|---------------------|---------------|-------------------|
+| 产品、PRD、需求说明、整理需求、技术规划、需求转文档、验收标准 | `project-workflow-product.mdc` | `docs/general/{需求名称}/需求文档/`、`技术设计方案/`；Skill `requirements-to-tech-doc` |
+| 设计、UI、UX、原型、交互、设计稿、mockup、Figma | `project-workflow-ui.mdc` | `docs/general/{需求名称}/需求文档/`；Skill `huashu-design` / `prototype-design` |
+| 测试、E2E、验收、回归、联调验证、Playwright、帮我验 | `project-workflow-test.mdc` | `{代码目录}docs/codebase/REGRESSION-PLAYBOOK.md`；Skill `e2e-testing` |
+| 接口、Controller、Service、Laravel、Domain、php、后端、服务端 | `project-workflow-api.mdc` | `api/AGENTS.md` → `api/docs/README.md` → `api/docs/modules/README.md` |
+| 页面、路由、Vue、组件、管理平台、门户端、官网、H5、PC前端 | `project-workflow-front.mdc` | 已识别前端子项目的 `AGENTS.md` → `docs/README.md` → 实际模块索引 |
+
+**未命中上表且进入编码**：按下方「项目范围」默认加载 api 和/或 front workflow。
+
+**路径约定**：需求/技术设计文档落盘根为 `docs/general/{需求名称}/`；子项目实现文档仅使用 `{代码目录}docs/` 下实际存在的文件与索引，详见根 `AGENTS.md` 的「子项目文档优先级」。
+
+---
+
+## 第一步：解析用户说的「哪个项目」
+
+**唯一事实来源**：所有项目组、子项目、别名、代码目录均以 `AGENTS.md`「项目注册表」为准。本步骤描述**如何匹配**，不在此重复维护完整别名。
+
+按下列顺序匹配（**命中即停止**）：
+
+### A. 子项目限定（单端）
+
+用户表述命中 `AGENTS.md` 中**某个子项目**的「触发别名」，或当前改动路径落在该子项目「代码目录」内 → 范围 = **仅该子项目**。
+
+| 用户表述含 | 范围 | 代码根目录 |
+|-----------|------|-----------|
+| 后端、API、接口、服务端、server | 仅后端子项目 | `api/` |
+| 管理平台、管理后台、admin、fornt_admin、front_admin | 仅管理平台前端 | `fornt_admin/` |
+| 门户端、移动端、H5、C端、m_front | 仅门户端前端 | `m_front/` |
+| 官网、PC官网、PC前端、pc_fornt、pc_front | 仅官网前端 | `pc_fornt/` |
+
+### B. 项目组限定（多端，默认全栈范围）
+
+用户表述命中 `AGENTS.md` 中**项目组 general** 的「触发别名」，且**未**同时满足 A 的单端限定 → 范围 = **general 项目组全部四端**。
+
+| 解析项 | 取值方式 |
+|--------|----------|
+| 各端代码目录 | `api/`、`fornt_admin/`、`m_front/`、`pc_fornt/` |
+| 协作规则 | `multi-project-workspace.mdc` |
+| 全栈流水线 | Skill `coding-agent-team-fullstack` |
+| 需求文档根 | `docs/general/{需求名称}/` |
+
+### C. 路径推断（用户未说项目名）
+
+按当前改动路径落在 `AGENTS.md` 哪个子项目「代码目录」内判定：
+
+| 当前主要改动路径 | 范围 |
+|-----------------|------|
+| 落在 `api/` | 仅后端子项目 |
+| 落在 `fornt_admin/` | 仅管理平台前端 |
+| 落在 `m_front/` | 仅门户端前端 |
+| 落在 `pc_fornt/` | 仅官网前端 |
+| 四端均有改动 | general 项目组（多端） |
+
+### D. 仍不明确
+
+用一句话向用户确认目标端别：**api 后端 / fornt_admin 管理平台 / m_front 门户端 / pc_fornt 官网 / general 全部四端**。确认后再 Read 对应 workflow。
+
+---
+
+## 第二步：加载子项目文档上下文（编码前必读）
+
+对每个已识别子项目，按根 `AGENTS.md`「子项目文档优先级」依次 Read：子项目 `AGENTS.md`（存在时）、`docs/README.md`、`docs/rules/`、`docs/modules/README.md`、与任务匹配的 `docs/codebase/` 和 `docs/skills/`。具体模块文件只能通过该子项目的实际索引定位，不得拼接 `{Domain}.md`、`{模块}.md` 等假定路径。
+
+## 第三步：按「角色 × 范围」加载 workflow
+
+| 范围 | 编码 workflow（必读） | 模块文档 |
+|------|----------------------|----------|
+| 仅后端 `api` | `project-workflow-api.mdc` | `api/docs/README.md` 与实际模块索引 |
+| 任一前端 | `project-workflow-front.mdc` | 该前端子项目的实际模块索引与架构文档 |
+| **general（多端）** | **四端按需 Read 对应 workflow**；接口需求须对照 `api` 与各前端实际文档或接口契约 | 上表各端路径 |
+
+产品 / 设计 / 测试类任务：即使范围是多端，也须先 Read 第零步对应 workflow，再按上表补读 api/front 映射表。
+
+多端任务交付时，回复须**按端分组**（后端 / 管理平台 / 门户端 / 官网 / 联调验证）。
+
+---
+
+## 第四步：委派 Agent（可选）
+
+| 范围 | 子 Agent |
+|------|---------|
+| 仅后端 | `api-developer` |
+| 仅前端 | `front-developer` |
+| 项目组（多端）· 先后端再前端 | `coding-agent-team-fullstack` 或依次委派上表各端 Agent |
+| 开发结束文档 | `doc-updater` |
+
+---
+
+## 禁止行为
+
+1. 用户说**通用 / 全栈 / 全部 / 四端**时，**禁止**只改一端而不说明范围缩小原因。
+2. **禁止**在任一子项目子目录单独维护 `.codex/` 规则，统一以仓库根 `.codex/rules/` 为准；子项目版本化知识维护在其 `AGENTS.md` 与 `docs/`。
+3. 多端联调 **禁止**前端 Mock（见 `api-first-no-mock.mdc`）。
+
+---
+
+## 别名速查（与 registry 同步）
+
+扩展新项目或别名时，**同时**更新 `AGENTS.md`（项目注册表 + workflow 口语表）与本节。
+
+<!-- AIGC:cursor|author:沉香|lines:约135|dates:2026-07|功能说明:路由规则初始化为通用四端版本，仅识别api、fornt_admin、m_front、pc_fornt -->

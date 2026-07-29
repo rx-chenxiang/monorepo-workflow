@@ -1,0 +1,40 @@
+# macOS 系统文件（全局忽略，避免误提交）
+**/.DS_Store
+
+# 运行缓存与临时产物
+**/__pycache__/
+*.py[cod]
+.tmp/
+.codex/tmp/
+
+# ── 通用业务子项目（独立 Git 仓库，禁止从工作区根仓提交）──
+# 各目录可含自有 .git；代码变更须 cd 进入对应子项目后单独 commit / push。
+# 根仓只保留四端的 AGENTS.md 与 docs/ 模板；真实业务源码由各子项目仓库自行管理。
+# 注册表见 AGENTS.md；新增子项目时同步追加本段并更新 AGENTS.md。
+/api/*
+!/api/AGENTS.md
+!/api/docs/
+!/api/docs/**
+
+/fornt_admin/*
+!/fornt_admin/AGENTS.md
+!/fornt_admin/docs/
+!/fornt_admin/docs/**
+
+/m_front/*
+!/m_front/AGENTS.md
+!/m_front/docs/
+!/m_front/docs/**
+
+/pc_fornt/*
+!/pc_fornt/AGENTS.md
+!/pc_fornt/docs/
+!/pc_fornt/docs/**
+
+# Cursor 仅镜像 rules/agents，技能以 .codex/skills 为权威来源，避免双份大文件漂移。
+/.cursor/skills/
+
+# 本地 IDE 配置
+.idea
+
+# AIGC:cursor|author:沉香|lines:约32|dates:2026-07 功能说明:忽略缓存与Cursor重复技能目录，四端目录仅保留AGENTS与docs模板进入根仓
